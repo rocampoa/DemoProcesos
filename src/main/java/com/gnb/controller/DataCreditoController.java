@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping(path = "api/datacredito/")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
@@ -36,21 +38,16 @@ public class DataCreditoController {
 
   @PostMapping(path = "loginBonita")
   public AuthenticationResponseDTO loginBonita(@RequestBody AuthenticationDTO data) {
-    AuthenticationResponseDTO result = null;
+    AuthenticationResponseDTO result;
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-    String parameter = new StringBuilder("username=")
-            .append(data.getUserName())
-            .append("&password=")
-            .append(data.getPassword())
-            .append("&redirect=false&redirectURL=").toString();
+    String parameter = "username=" + data.getUserName() + "&password=" + data.getPassword() + "&redirect=false&redirectURL=";
 
-    HttpEntity<String> formEntity = new HttpEntity(parameter, headers);
-    ResponseEntity<String> rta = null;
+    HttpEntity<String> formEntity = new HttpEntity<>(parameter, headers);
     try {
-      rta = restTemplate.postForEntity(bonitaUrl, formEntity, String.class);
-      result = new AuthenticationResponseDTO(rta.getHeaders().get("Set-Cookie"));
+      ResponseEntity<String>  rta = restTemplate.postForEntity(bonitaUrl, formEntity, String.class);
+      result = new AuthenticationResponseDTO(Objects.requireNonNull(rta.getHeaders().get("Set-Cookie")));
     } catch (HttpClientErrorException e) {
       if (e.getRawStatusCode() == 401) {
         result = new AuthenticationResponseDTO("Usuario o clave incorrectos");
