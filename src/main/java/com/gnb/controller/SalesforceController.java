@@ -4,7 +4,6 @@ import com.gnb.dto.salesforce.ContactDTO;
 import com.gnb.dto.salesforce.CreateContactRespDTO;
 import com.gnb.dto.salesforce.SalesforceAuthDTO;
 import com.gnb.dto.salesforce.SalesforceRespAuthDTO;
-import com.gnb.dto.task.TakeTaskSendDTO;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +27,9 @@ public class SalesforceController {
 
   @Value("${salesforceCreate.url}")
   private String createUrl;
+
+  @Value("${salesfornceQuery.url}")
+  private String queryUrl;
 
   private HeaderInterpreter headerInterpreter;
 
@@ -60,7 +62,17 @@ public class SalesforceController {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", requestHeaders.get("authorization"));
     HttpEntity<ContactDTO> formEntity = new HttpEntity<>(data, headers);
-    ResponseEntity<CreateContactRespDTO> rta = restTemplate.exchange(createUrl, HttpMethod.POST, formEntity,  CreateContactRespDTO.class);
+    ResponseEntity<CreateContactRespDTO> rta = restTemplate.exchange(createUrl, HttpMethod.POST, formEntity, CreateContactRespDTO.class);
+    return rta.getBody();
+  }
+
+
+  @GetMapping(path = "{contactId}")
+  public String queryContact(@RequestHeader Map<String, String> requestHeaders, @PathVariable("contactId") String contactId) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", requestHeaders.get("authorization"));
+    HttpEntity<String> formEntity = new HttpEntity<>("", headers);
+    ResponseEntity<String> rta = restTemplate.exchange(queryUrl + contactId + "'", HttpMethod.GET, formEntity, String.class);
     return rta.getBody();
   }
 
