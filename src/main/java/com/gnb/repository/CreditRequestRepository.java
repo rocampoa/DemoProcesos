@@ -42,8 +42,10 @@ public interface CreditRequestRepository  extends JpaRepository<CreditRequest, L
           "      dctos_nomina = :payrollDiscounts," +
           "      otrosegresos = :expenses" +
           "  Where id_solicitud = :requestId", nativeQuery = true)
-  void updateRequest(@Param("requestId") Long referenceId, @Param("names") String names, @Param("relationship") String relationship, @Param("address") String address,
-                       @Param("phone") String phone, @Param("city") String city, @Param("state") String state, @Param("verified") Integer verified);
+  void updateRequest(@Param("requestId") Long referenceId, @Param("status") Integer status, @Param("salary") BigDecimal salary, @Param("bonus") BigDecimal bonus,
+                     @Param("rent") BigDecimal rent, @Param("commissions") BigDecimal commissions, @Param("income") BigDecimal income, @Param("erent") BigDecimal erent,
+                     @Param("cards") BigDecimal cards, @Param("loans") BigDecimal loans, @Param("payrollDiscounts") BigDecimal payrollDiscounts,
+                     @Param("expenses") BigDecimal expenses);
 
   @Transactional
   @Modifying
