@@ -1,6 +1,7 @@
 package com.gnb.repository;
 
 import com.gnb.dto.CreditRequestDTO;
+import com.gnb.dto.ReferenciaDTO;
 import com.gnb.entity.CreditRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,9 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
-public interface CreditRequestRepository extends JpaRepository<CreditRequest, Long> {
+public interface CreditRequestRepository  extends JpaRepository<CreditRequest, Long> {
 
   @Transactional
   @Modifying
@@ -40,7 +42,7 @@ public interface CreditRequestRepository extends JpaRepository<CreditRequest, Lo
           "      dctos_nomina = :payrollDiscounts," +
           "      otrosegresos = :expenses" +
           "  Where id_solicitud = :requestId", nativeQuery = true)
-  void updateRequest(@Param("requestId") Long requestId, @Param("status") Integer status, @Param("salary") BigDecimal salary, @Param("bonus") BigDecimal bonus,
+  void updateRequest(@Param("requestId") Long referenceId, @Param("status") Integer status, @Param("salary") BigDecimal salary, @Param("bonus") BigDecimal bonus,
                      @Param("rent") BigDecimal rent, @Param("commissions") BigDecimal commissions, @Param("income") BigDecimal income, @Param("erent") BigDecimal erent,
                      @Param("cards") BigDecimal cards, @Param("loans") BigDecimal loans, @Param("payrollDiscounts") BigDecimal payrollDiscounts,
                      @Param("expenses") BigDecimal expenses);
