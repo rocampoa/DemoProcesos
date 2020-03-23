@@ -1,6 +1,7 @@
 package com.gnb.controller;
 
 import com.gnb.dto.HumanTaskDTO;
+import com.gnb.dto.SalesForceDTO;
 import com.gnb.dto.TakeTaskDTO;
 import com.gnb.dto.TakeTaskSendDTO;
 import com.gnb.util.HeaderInterpreter;
@@ -77,6 +78,13 @@ public class HumanTaskController {
     TakeTaskSendDTO parameter = new TakeTaskSendDTO(data.getUserId());
     HttpEntity<TakeTaskSendDTO> formEntity = new HttpEntity<>(parameter, headerInterpreter.getHeaders(requestHeaders));
     ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/humanTask/" + data.getTaskId(), HttpMethod.PUT, formEntity, String.class);
+  }
+
+  @PostMapping(path = "{taskId}")
+  public String sendCreditRequest(@RequestHeader Map<String, String> requestHeaders, @RequestBody SalesForceDTO data, @PathVariable("taskId") String taskId) {
+    HttpEntity<SalesForceDTO> formEntity = new HttpEntity<>(data, headerInterpreter.getHeaders(requestHeaders));
+    ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/userTask/" + taskId + "/execution?assign=false", HttpMethod.POST, formEntity, String.class);
+    return rta.getBody();
   }
 
 }
