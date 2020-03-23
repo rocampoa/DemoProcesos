@@ -1,7 +1,7 @@
 package com.gnb.controller;
 
-import com.gnb.dto.ProcessDTO;
-import com.gnb.dto.ProcessInstantiationRespDTO;
+import com.gnb.dto.process.ProcessDTO;
+import com.gnb.dto.process.ProcessInstantiationRespDTO;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

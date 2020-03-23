@@ -1,9 +1,9 @@
 package com.gnb.controller;
 
-import com.gnb.dto.HumanTaskDTO;
-import com.gnb.dto.SalesForceDTO;
-import com.gnb.dto.TakeTaskDTO;
-import com.gnb.dto.TakeTaskSendDTO;
+import com.gnb.dto.salesforce.SalesForceDTO;
+import com.gnb.dto.task.HumanTaskDTO;
+import com.gnb.dto.task.TakeTaskDTO;
+import com.gnb.dto.task.TakeTaskSendDTO;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

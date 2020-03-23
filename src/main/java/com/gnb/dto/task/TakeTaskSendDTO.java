@@ -1,4 +1,4 @@
-package com.gnb.dto;
+package com.gnb.dto.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

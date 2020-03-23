@@ -1,7 +1,6 @@
 package com.gnb.repository;
 
 import com.gnb.dto.CreditRequestDTO;
-import com.gnb.dto.ReferenciaDTO;
 import com.gnb.entity.CreditRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,10 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Repository
-public interface CreditRequestRepository  extends JpaRepository<CreditRequest, Long> {
+public interface CreditRequestRepository extends JpaRepository<CreditRequest, Long> {
 
   @Transactional
   @Modifying

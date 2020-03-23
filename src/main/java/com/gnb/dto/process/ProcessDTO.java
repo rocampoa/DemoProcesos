@@ -1,4 +1,4 @@
-package com.gnb.dto;
+package com.gnb.dto.process;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

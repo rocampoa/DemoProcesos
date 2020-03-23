@@ -1,4 +1,4 @@
-package com.gnb.dto;
+package com.gnb.dto.process;
 
 import lombok.Data;
 

@@ -1,9 +1,9 @@
 package com.gnb.controller;
 
-import com.gnb.dto.AuthenticationDTO;
-import com.gnb.dto.AuthenticationResponseDTO;
-import com.gnb.dto.ProcessDTO;
-import com.gnb.dto.SessionDTO;
+import com.gnb.dto.auth.AuthenticationDTO;
+import com.gnb.dto.auth.AuthenticationResponseDTO;
+import com.gnb.dto.auth.SessionDTO;
+import com.gnb.dto.process.ProcessDTO;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
