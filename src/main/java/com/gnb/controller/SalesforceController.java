@@ -1,10 +1,15 @@
 package com.gnb.controller;
 
+import com.gnb.dto.salesforce.ContactDTO;
+import com.gnb.dto.salesforce.CreateContactRespDTO;
 import com.gnb.dto.salesforce.SalesforceAuthDTO;
 import com.gnb.dto.salesforce.SalesforceRespAuthDTO;
+import com.gnb.dto.task.TakeTaskSendDTO;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +56,12 @@ public class SalesforceController {
   }
 
   @PostMapping(path = "create")
-  public void createContact(@RequestHeader Map<String, String> requestHeaders) {
-
+  public CreateContactRespDTO createContact(@RequestHeader Map<String, String> requestHeaders, @RequestBody ContactDTO data) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", requestHeaders.get("authorization"));
+    HttpEntity<ContactDTO> formEntity = new HttpEntity<>(data, headers);
+    ResponseEntity<CreateContactRespDTO> rta = restTemplate.exchange(createUrl, HttpMethod.POST, formEntity,  CreateContactRespDTO.class);
+    return rta.getBody();
   }
 
 }
