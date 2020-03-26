@@ -12,4 +12,5 @@ public class TaskRequestDTO {
   private String clientId;
   private String refCId;
   private String refPId;
+  private Integer formularioId;
 }

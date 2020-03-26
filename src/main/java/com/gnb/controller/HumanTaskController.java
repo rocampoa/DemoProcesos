@@ -1,10 +1,6 @@
 package com.gnb.controller;
 
-import com.gnb.dto.salesforce.SalesForceDTO;
-import com.gnb.dto.task.HumanTaskDTO;
-import com.gnb.dto.task.TakeTaskDTO;
-import com.gnb.dto.task.TakeTaskSendDTO;
-import com.gnb.dto.task.TaskRequestDTO;
+import com.gnb.dto.task.*;
 import com.gnb.util.HeaderInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,8 +59,7 @@ public class HumanTaskController {
             .queryParam("c", "50")
             .queryParam("f", "state=ready")
             .queryParam("f", "user=" + userId)
-            .queryParam("p", "0")
-            .queryParam("0", "displayName+ASC");
+            .queryParam("p", "0");
     ResponseEntity<HumanTaskDTO[]> rta = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, formEntity, HumanTaskDTO[].class);
     result = rta.getBody();
     if (caseId.isPresent()) {
@@ -80,12 +75,19 @@ public class HumanTaskController {
     TakeTaskSendDTO parameter = new TakeTaskSendDTO(data.getUserId());
     HttpEntity<TakeTaskSendDTO> formEntity = new HttpEntity<>(parameter, headerInterpreter.getHeaders(requestHeaders));
     ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/humanTask/" + data.getTaskId(), HttpMethod.PUT, formEntity, String.class);
-    return "OK";
+    return "{\"rta\":\"OK\"}";
   }
 
   @PostMapping(path = "endTaskRequest/{taskId}")
   public String sendCreditRequest(@RequestHeader Map<String, String> requestHeaders, @RequestBody TaskRequestDTO data, @PathVariable("taskId") String taskId) {
     HttpEntity<TaskRequestDTO> formEntity = new HttpEntity<>(data, headerInterpreter.getHeaders(requestHeaders));
+    ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/userTask/" + taskId + "/execution?assign=false", HttpMethod.POST, formEntity, String.class);
+    return rta.getBody();
+  }
+
+  @PostMapping(path = "endTaskValidate/{taskId}")
+  public String sendValidate(@RequestHeader Map<String, String> requestHeaders, @RequestBody TaskValidateDTO data, @PathVariable("taskId") String taskId) {
+    HttpEntity<TaskValidateDTO> formEntity = new HttpEntity<>(data, headerInterpreter.getHeaders(requestHeaders));
     ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/userTask/" + taskId + "/execution?assign=false", HttpMethod.POST, formEntity, String.class);
     return rta.getBody();
   }

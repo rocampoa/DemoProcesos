@@ -9,48 +9,47 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 
 @Repository
 public interface CreditRequestRepository extends JpaRepository<CreditRequest, Long> {
 
   @Transactional
   @Modifying
-  @Query(value = "Insert Into solicitud" +
-          "  (id_contacto, estado, salario, bonificacion, arriendos, comisiones, otros_ingresos, e_arriendo, tarjetas, prestamos, dctos_nomina, otrosegresos)" +
-          "Values" +
-          "  (:contactId, :status, :salary, :bonus, :rent, :commissions, :income, :erent, :cards, :loans, :payrollDiscounts, :expenses)", nativeQuery = true)
-  void insertRequest(@Param("contactId") String contactId, @Param("status") Integer status, @Param("salary") BigDecimal salary, @Param("bonus") BigDecimal bonus,
-                     @Param("rent") BigDecimal rent, @Param("commissions") BigDecimal commissions, @Param("income") BigDecimal income, @Param("erent") BigDecimal erent,
-                     @Param("cards") BigDecimal cards, @Param("loans") BigDecimal loans, @Param("payrollDiscounts") BigDecimal payrollDiscounts,
-                     @Param("expenses") BigDecimal expenses);
+  @Query(value = "Insert Into Solicitud " +
+          "  (refpid, refcid, contactid, status, salary, amount, rent, commissions, income, erent, cards, loans, expenses)" +
+          " Values" +
+          "  (:refPId, :refCId, :contactId, :status, :salary, :amount, :rent, :commissions, :income, :erent, :cards,:loans, :expenses)", nativeQuery = true)
+  void insertRequest(@Param("refPId") String refPId, @Param("refCId") String refCId, @Param("contactId") String contactId, @Param("status") Long status,
+                     @Param("salary") Long salary, @Param("amount") Long amount, @Param("rent") Long rent, @Param("commissions") Long commissions, @Param("income") Long income,
+                     @Param("erent") Long erent, @Param("cards") Long cards, @Param("loans") Long loans, @Param("expenses") Long expenses);
+
+  @Transactional
+  @Modifying
+  @Query(value = "Update Solicitud" +
+          "  Set refPid = :refPId," +
+          "      refCid = :refCId," +
+          "      contactid = :contactId," +
+          "      status = :status," +
+          "      salary = :salary," +
+          "      amount = :amount," +
+          "      rent = :rent," +
+          "      commissions = :commissions, " +
+          "      income = :income, " +
+          "      erent = :erent, " +
+          "      cards = :cards, " +
+          "      loans = :loans, " +
+          "      expenses = :expenses" +
+          "  Where requestId = :requestId", nativeQuery = true)
+  void updateRequest(@Param("requestId") Long requestId, @Param("refPId") String refPId, @Param("refCId") String refCId, @Param("contactId") String contactId, @Param("status") Long status,
+                     @Param("salary") Long salary, @Param("amount") Long amount, @Param("rent") Long rent, @Param("commissions") Long commissions, @Param("income") Long income,
+                     @Param("erent") Long erent, @Param("cards") Long cards, @Param("loans") Long loans, @Param("expenses") Long expenses);
 
   @Transactional
   @Modifying
   @Query(value = "Update solicitud" +
-          "  Set estado = :status," +
-          "      salario = :salary," +
-          "      bonificacion = :bonus," +
-          "      arriendos = :rent," +
-          "      comisiones = :commissions," +
-          "      otros_ingresos = :income," +
-          "      e_arriendo = :erent," +
-          "      tarjetas = :cards," +
-          "      prestamos = :loans," +
-          "      dctos_nomina = :payrollDiscounts," +
-          "      otrosegresos = :expenses" +
-          "  Where id_solicitud = :requestId", nativeQuery = true)
-  void updateRequest(@Param("requestId") Long referenceId, @Param("status") Integer status, @Param("salary") BigDecimal salary, @Param("bonus") BigDecimal bonus,
-                     @Param("rent") BigDecimal rent, @Param("commissions") BigDecimal commissions, @Param("income") BigDecimal income, @Param("erent") BigDecimal erent,
-                     @Param("cards") BigDecimal cards, @Param("loans") BigDecimal loans, @Param("payrollDiscounts") BigDecimal payrollDiscounts,
-                     @Param("expenses") BigDecimal expenses);
-
-  @Transactional
-  @Modifying
-  @Query(value = "Update solicitud" +
-          "  Set estado = :status" +
-          "  Where id_solicitud = :requestId", nativeQuery = true)
-  void changeStatus(@Param("requestId") Long requestId, @Param("status") Integer status);
+          "  Set status = :status" +
+          "  Where requestId = :requestId", nativeQuery = true)
+  void changeStatus(@Param("requestId") Long requestId, @Param("status") Long status);
 
   @Query(name = "request.queryByRequest", nativeQuery = true)
   CreditRequestDTO getRequest(@Param("requestId") Long requestId);

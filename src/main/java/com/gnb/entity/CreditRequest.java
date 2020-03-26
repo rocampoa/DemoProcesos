@@ -1,30 +1,32 @@
 package com.gnb.entity;
 
-import com.gnb.dto.ReferenciaDTO;
+import com.gnb.dto.CreditRequestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+
 
 @SqlResultSetMapping(name = "requestMapping",
         classes = {
                 @ConstructorResult(
-                        targetClass = ReferenciaDTO.class,
+                        targetClass = CreditRequestDTO.class,
                         columns = {
                                 @ColumnResult(name = "requestId", type = Long.class),
+                                @ColumnResult(name = "refPId", type = String.class),
+                                @ColumnResult(name = "refCId", type = String.class),
                                 @ColumnResult(name = "contactId", type = String.class),
-                                @ColumnResult(name = "status", type = Integer.class),
-                                @ColumnResult(name = "salary", type = BigDecimal.class),
-                                @ColumnResult(name = "bonus", type = BigDecimal.class),
-                                @ColumnResult(name = "rent", type = BigDecimal.class),
-                                @ColumnResult(name = "commissions", type = BigDecimal.class),
-                                @ColumnResult(name = "erent", type = BigDecimal.class),
-                                @ColumnResult(name = "cards", type = BigDecimal.class),
-                                @ColumnResult(name = "loans", type = BigDecimal.class),
-                                @ColumnResult(name = "payrollDiscounts", type = BigDecimal.class),
-                                @ColumnResult(name = "expenses", type = BigDecimal.class),
+                                @ColumnResult(name = "status", type = Long.class),
+                                @ColumnResult(name = "salary", type = Long.class),
+                                @ColumnResult(name = "amount", type = Long.class),
+                                @ColumnResult(name = "rent", type = Long.class),
+                                @ColumnResult(name = "commissions", type = Long.class),
+                                @ColumnResult(name = "income", type = Long.class),
+                                @ColumnResult(name = "erent", type = Long.class),
+                                @ColumnResult(name = "cards", type = Long.class),
+                                @ColumnResult(name = "loans", type = Long.class),
+                                @ColumnResult(name = "expenses", type = Long.class),
                         }
                 )
         }
@@ -32,19 +34,17 @@ import java.math.BigDecimal;
 
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "request.queryByRequest",
-                query = "Select id_solicitud as requestId, id_contacto as contactId, estado as status, salario as salary, bonificacion as bonues," +
-                        "       arriendos as rent, comisiones as commissions, otros_ingresos as income, e_arriendo as erent, tarjetas as cards," +
-                        "       prestamos as loans, dctos_nomina as payrollDiscounts, otrosegresos as expenses" +
+                query = "Select requestid as requestId, refpid as refPId, refcid as refCId, contactid as contactId," +
+                        "       status, salary, amount, rent, commissions, income, erent, cards, loans, expenses" +
                         "  From solicitud" +
-                        "  Where id_solicitud = :requestId",
+                        "  Where requestid = :requestId",
                 resultSetMapping = "requestMapping"
         ),
         @NamedNativeQuery(name = "request.queryByContact",
-                query = "Select id_solicitud as requestId, id_contacto as contactId, estado as status, salario as salary, bonificacion as bonues," +
-                        "       arriendos as rent, comisiones as commissions, otros_ingresos as income, e_arriendo as erent, tarjetas as cards," +
-                        "       prestamos as loans, dctos_nomina as payrollDiscounts, otrosegresos as expenses" +
+                query = "Select requestid as requestId, refpid as refPId, refcid as refCId, contactid as contactId," +
+                        "       status, salary, amount, rent, commissions, income, erent, cards, loans, expenses" +
                         "  From solicitud" +
-                        "  Where id_contacto = :contactId",
+                        "  Where contactId = :contactId",
                 resultSetMapping = "requestMapping"
         )
 })
@@ -57,14 +57,40 @@ public class CreditRequest {
   @GenericGenerator(
           name = "requestGenerator",
           strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-          parameters = {@org.hibernate.annotations.Parameter(name = "sequence_name", value = "Solicitud_IdSolicitud_seq"),
+          parameters = {@org.hibernate.annotations.Parameter(name = "sequence_name", value = "solicitud_requestId_seq"),
                   @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                   @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")}
   )
   @Id
-  @Column(name = "id_solicitud", columnDefinition = "serial")
+  @Column(name = "requestid", columnDefinition = "serial")
   @GeneratedValue(generator = "requestGenerator")
   private Long requestId;
 
+  @Column(name = "refpid")
+  private String refPId;
+  @Column(name = "refcid")
+  private String refCId;
+  @Column(name = "contactid")
+  private String contactId;
+  @Column(name = "status")
+  private Long status;
+  @Column(name = "salary")
+  private Long salary;
+  @Column(name = "amount")
+  private Long amount;
+  @Column(name = "rent")
+  private Long rent;
+  @Column(name = "commissions")
+  private Long commissions;
+  @Column(name = "income")
+  private Long income;
+  @Column(name = "erent")
+  private Long erent;
+  @Column(name = "cards")
+  private Long cards;
+  @Column(name = "loans")
+  private Long loans;
+  @Column(name = "expenses")
+  private Long expenses;
 
 }
