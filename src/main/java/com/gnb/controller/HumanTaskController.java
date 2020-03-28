@@ -92,4 +92,11 @@ public class HumanTaskController {
     return rta.getBody();
   }
 
+  @PostMapping(path = "endTaskPoll/{taskId}")
+  public String sendPoll(@RequestHeader Map<String, String> requestHeaders, @RequestBody PollResponseDTO data, @PathVariable("taskId") String taskId) {
+    HttpEntity<PollResponseDTO> formEntity = new HttpEntity<>(data, headerInterpreter.getHeaders(requestHeaders));
+    ResponseEntity<String> rta = restTemplate.exchange(bonitaUrl + "API/bpm/userTask/" + taskId + "/execution?assign=false", HttpMethod.POST, formEntity, String.class);
+    return rta.getBody();
+  }
+
 }

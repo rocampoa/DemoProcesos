@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TaskValidateDTO {
-  private String resultadoVal;
+public class PollResponseDTO {
+  private String rta1;
+  private String rta2;
+  private String rta3;
 }
